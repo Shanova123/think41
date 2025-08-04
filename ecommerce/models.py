@@ -1,10 +1,11 @@
 from django.db import models
 
+
 class User(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=20)
     state = models.CharField(max_length=100)
@@ -22,18 +23,18 @@ class User(models.Model):
 
 
 class Order(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
     gender = models.CharField(max_length=20)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     shipped_at = models.DateTimeField(null=True, blank=True)
     returned_at = models.DateTimeField(null=True, blank=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
     num_of_item = models.IntegerField()
 
     def __str__(self):
-        return f"Order {self.id} by User {self.user.id}"
+        return f"Order {self.id} by {self.user.first_name}"
 
 
 class Customer(models.Model):
